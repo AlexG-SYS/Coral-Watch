@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Signup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="./assets/fav-icon.png" rel="icon" type="image/png"> <!-- Replace with the actual URL of your icon -->
+    <link href="./assets/fav-icon.png" rel="shortcut icon" type="image/png">
+    <!-- For compatibility with older browsers -->
+    <link href="./assets/fav-icon.png" rel="apple-touch-icon" type="image/png"> <!-- For Apple devices -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 94vh;
+
+            padding-bottom: 56px;
+            /* Adjusted for the fixed bottom navigation */
+            margin-bottom: 56px;
+            /* Add margin at the bottom for visual separation */
+            background-image: url('./assets/Background.png');
+            /* Replace with the path to your image */
+            background-size: cover;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .form-group button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+            /* Darker shade on hover */
+        }
+
+        .switch-form {
+            margin-top: 20px;
+        }
+
+        .switch-form a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .switch-form a:hover {
+            color: #0056b3;
+            /* Darker shade on hover */
+        }
+
+        .center-content img {
+            box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+            max-width: 100%;
+            /* Ensure the image does not exceed its container */
+            max-height: 100%;
+            /* Ensure the image does not exceed its container */
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card p-4">
+            <div id="loginForm">
+                <div class="center-content">
+                    <img src="./assets/Logo.png" alt="Coral Watch Logo">
+                </div>
+                <h2 class="mt-4 mb-2" style="color: #0056b3;">Login</h2>
+                <!-- Error message container -->
+                <div id="errorMessageLogin" style="color: red; margin-bottom: 10px;"></div>
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="text" class="form-control" id="loginEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password">
+                </div>
+                <div class="form-group">
+                    <button onclick="login()" class="btn btn-primary">Log In</button>
+                </div>
+                <div class="switch-form">
+                    Don't have an account? <a href="#" onclick="switchForm('signupForm')">Sign Up</a>
+                </div>
+            </div>
+
+            <div id="signupForm" style="display: none;">
+                
+                <h2 class="mt-4 mb-2" style="color: #0056b3;">Signup</h2>
+                <!-- Error message container -->
+                <div id="errorMessageSignup" style="color: red; margin-bottom: 10px;"></div>
+
+                <div class="form-group">
+                    <label for="signupFname">First Name:</label>
+                    <input type="text" class="form-control" id="signupFname" placeholder="Enter your first name">
+                </div>
+                <div class="form-group">
+                    <label for="signupLname">Last Name:</label>
+                    <input type="text" class="form-control" id="signupLname" placeholder="Enter your last name">
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email:</label>
+                    <input type="text" class="form-control" id="signupEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password:</label>
+                    <input type="password" class="form-control" id="signupPassword" placeholder="Enter your password">
+                </div>
+                <div class="form-group">
+                    <button onclick="signup()" class="btn btn-primary">Sign Up</button>
+                </div>
+                <div class="switch-form">
+                    Already have an account? <a href="#" onclick="switchForm('loginForm')">Log In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchForm(formId) {
+            document.getElementById('loginForm').style.display = formId === 'loginForm' ? 'block' : 'none';
+            document.getElementById('signupForm').style.display = formId === 'signupForm' ? 'block' : 'none';
+        }
+
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Validation logic
+            if (email === 'test@test.com' && password === 'test') {
+                // Redirect to home.html
+                window.location.href = 'home.html';
+            } else {
+                // Show error message
+                document.getElementById('errorMessageLogin').innerText = 'Incorrect credentials. Please try again.';
+            }
+        }
+
+        function signup() {
+            const fname = document.getElementById('signupFname').value;
+            const lname = document.getElementById('signupLname').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            document.getElementById('errorMessageSignup').innerText = 'Sorry, no new users can sign up at the moment.';
+
+            console.log('Signup First Name:', fname);
+            console.log('Signup Last Name:', lname);
+            console.log('Signup Email:', email);
+            console.log('Signup Password:', password);
+        }
+    </script>
+
+    <!-- Bootstrap JS dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
