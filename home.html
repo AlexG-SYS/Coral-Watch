@@ -60,7 +60,7 @@
         }
 
         .navbar-icon {
-            font-size: 16px;
+            font-size: 18px;
             /* Adjust the font size as needed */
             padding: 4px;
             /* Adjust the padding as needed */
@@ -82,9 +82,9 @@
 
         .center-content img {
             box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
-            max-width: 100%;
+            max-width: 10rem;
             /* Ensure the image does not exceed its container */
-            max-height: 100%;
+            max-height: auto;
             /* Ensure the image does not exceed its container */
             border-radius: 10px;
         }
@@ -93,7 +93,7 @@
             position: relative;
             box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
             /* Increase the box shadow for more prominence */
-            margin: 20px 0;
+            margin: 10px 0;
             /* Increase the margin for more separation */
             border-radius: 10px;
             height: 72vh;
@@ -195,7 +195,7 @@
         </button>
 
         <!-- Your main content goes here -->
-        <div class="center-content mt-4">
+        <div class="center-content mt-2">
             <img src="./assets/Logo.png" alt="Coral Watch Logo">
         </div>
 
@@ -263,7 +263,7 @@
                 <div id="cameraOutput" class="m-2">
                     <!-- Display camera output here -->
                 </div>
-                <div class="center mt-4 pt-4">
+                <div class="center">
                     <button onclick="captureImage()" class="btn btn-primary mx-2">Capture Image</button>
                     <button onclick="captureVideo()" class="btn btn-success mx-2">Capture Video</button>
                 </div>
