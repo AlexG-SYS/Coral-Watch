@@ -259,7 +259,12 @@
         <!-- Camera View -->
         <div id="cameraView" style="display: none;">
             <div id="container" class="scroll-container">
-                <h2 class="m-3 center">Camera View</h2>
+                <div class="center">
+                    <h2 class="m-3 center">Camera View</h2>
+                    <button onclick="toggleCamera()" class="btn btn-info mx-2" id="switchCameraBtn">
+                        <i class="fas fa-sync-alt"></i> <!-- Font Awesome icon for switching camera -->
+                    </button>
+                </div>
                 <div id="cameraOutput" class="m-2">
                     <!-- Display camera output here -->
                 </div>
@@ -632,18 +637,29 @@
 
         function toggleCamera() {
             // Check if the camera is already started
-            if (!videoStream) {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(stream => {
-                        videoStream = stream;
-                        cameraOutput.innerHTML = '<video id="cameraFeed" width="100%" height="90%" autoplay></video>';
-                        const cameraFeed = document.getElementById('cameraFeed');
-                        cameraFeed.srcObject = videoStream;
-                    })
-                    .catch(error => {
-                        console.error('Error accessing camera:', error);
-                    });
+            if (videoStream) {
+                stopCamera();
+                startCamera();
+            } else {
+                startCamera();
             }
+        }
+
+        function startCamera() {
+            const constraints = {
+                video: { facingMode: 'environment' } // Try to use the back camera by default
+            };
+
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(stream => {
+                    videoStream = stream;
+                    cameraOutput.innerHTML = '<video id="cameraFeed" width="100%" height="90%" autoplay playsinline></video>';
+                    const cameraFeed = document.getElementById('cameraFeed');
+                    cameraFeed.srcObject = videoStream;
+                })
+                .catch(error => {
+                    console.error('Error accessing camera:', error);
+                });
         }
 
         function captureImage() {
