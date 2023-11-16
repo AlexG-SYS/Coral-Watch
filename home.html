@@ -178,6 +178,10 @@
             cursor: pointer;
             /* Change cursor to hand */
         }
+
+        #container video {
+            border-radius: 10px;
+        }
     </style>
 </head>
 
@@ -255,9 +259,14 @@
         <!-- Camera View -->
         <div id="cameraView" style="display: none;">
             <div id="container" class="scroll-container">
-                <video id="cameraStream" width="100%" height="auto" autoplay></video>
-                <button id="captureButton" onclick="captureImage()">Capture</button>
-                <button id="recordButton" onclick="toggleRecording()">Record</button>
+                <h2 class="m-4 center">Camera View</h2>
+                <div id="cameraOutput" class="m-2">
+                    <!-- Display camera output here -->
+                </div>
+                <div class="center mt-4 pt-4">
+                    <button onclick="captureImage()" class="btn btn-primary mx-2">Capture Image</button>
+                    <button onclick="captureVideo()" class="btn btn-success mx-2">Capture Video</button>
+                </div>
             </div>
         </div>
 
@@ -344,21 +353,23 @@
     <nav class="navbar">
         <div class="container d-flex justify-content-center align-items-center">
             <!-- Buttons -->
-            <button class="btn navbar-icon navbar-button" onclick="switchView('homeView')" id="homeViewButton">
+            <button class="btn navbar-icon navbar-button" onclick="switchView('homeView'); stopCamera();"
+                id="homeViewButton">
                 <i class="fas fa-home m-2"></i>
             </button>
-            <button class="btn navbar-icon navbar-button" onclick="switchView('coralListView')"
+            <button class="btn navbar-icon navbar-button" onclick="switchView('coralListView'); stopCamera();"
                 id="coralListViewButton">
                 <i class="fas fa-list m-2"></i>
             </button>
-            <button class="btn navbar-icon navbar-button" onclick="switchView('cameraView')" id="cameraViewButton">
+            <button class="btn navbar-icon navbar-button" onclick="switchView('cameraView'); toggleCamera()"
+                id="cameraViewButton">
                 <i class="fas fa-camera"></i>
             </button>
-            <button class="btn navbar-icon navbar-button" onclick="switchView('coralFormView')"
+            <button class="btn navbar-icon navbar-button" onclick="switchView('coralFormView'); stopCamera();"
                 id="coralFormViewButton">
                 <i class="fas fa-upload m-2"></i>
             </button>
-            <button class="btn navbar-icon navbar-button" onclick="syncData()" id="syncButton">
+            <button class="btn navbar-icon navbar-button" onclick="syncData(); stopCamera();" id="syncButton">
                 <i class="fas fa-sync m-2"></i>
             </button>
         </div>
@@ -402,6 +413,7 @@
         switchView('homeView');
 
         function switchView(viewId) {
+
             // Hide all views
             document.getElementById('homeView').style.display = 'none';
             document.getElementById('coralListView').style.display = 'none';
@@ -615,61 +627,58 @@
         }
 
 
-        // JavaScript for Camera View
-        let mediaStream;
-        let mediaRecorder;
-        let recordedChunks = [];
+        let videoStream;
+        const cameraOutput = document.getElementById('cameraOutput');
 
-        async function openCamera() {
-            try {
-                mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
-                document.getElementById('cameraStream').srcObject = mediaStream;
-                mediaRecorder = new MediaRecorder(mediaStream);
-
-                mediaRecorder.ondataavailable = (event) => {
-                    if (event.data.size > 0) {
-                        recordedChunks.push(event.data);
-                    }
-                };
-
-                mediaRecorder.onstop = () => {
-                    const recordedBlob = new Blob(recordedChunks, { type: 'video/webm' });
-                    recordedChunks = [];
-                    // You can now handle the recorded video blob as needed
-                };
-
-            } catch (error) {
-                console.error('Error accessing camera:', error);
+        function toggleCamera() {
+            // Check if the camera is already started
+            if (!videoStream) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        videoStream = stream;
+                        cameraOutput.innerHTML = '<video id="cameraFeed" width="100%" height="auto" autoplay></video>';
+                        const cameraFeed = document.getElementById('cameraFeed');
+                        cameraFeed.srcObject = videoStream;
+                    })
+                    .catch(error => {
+                        console.error('Error accessing camera:', error);
+                    });
             }
         }
 
         function captureImage() {
-            // Capture an image from the video stream
             const canvas = document.createElement('canvas');
-            const video = document.getElementById('cameraStream');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-            const capturedImage = canvas.toDataURL('image/png');
-
-            // You can now handle the captured image data (e.g., display it or send it to the server)
-            console.log('Captured Image:', capturedImage);
+            const context = canvas.getContext('2d');
+            const cameraFeed = document.getElementById('cameraFeed');
+            canvas.width = cameraFeed.videoWidth;
+            canvas.height = cameraFeed.videoHeight;
+            context.drawImage(cameraFeed, 0, 0, canvas.width, canvas.height);
+            const imageUrl = canvas.toDataURL('image/png');
+            showNotification('Image captured!');
+            // You can now use `imageUrl` or send it to your server
         }
 
-        function toggleRecording() {
-            if (mediaRecorder.state === 'inactive') {
-                // Start recording
-                mediaRecorder.start();
-                document.getElementById('recordButton').textContent = 'Stop Recording';
-            } else {
-                // Stop recording
-                mediaRecorder.stop();
-                document.getElementById('recordButton').textContent = 'Record';
+        function captureVideo() {
+            // Add logic to capture video if needed
+            showNotification('Video captured!');
+        }
+
+
+        // Function to stop the camera
+        function stopCamera() {
+            if (videoStream) {
+                // Get all tracks from the stream
+                const tracks = videoStream.getTracks();
+
+                // Stop each track
+                tracks.forEach(function (track) {
+                    track.stop();
+                });
+
+                // Reset the stream variable
+                videoStream = null;
             }
         }
-
-        // Open the camera when the Camera View is displayed
-        document.getElementById('cameraView').addEventListener('display', openCamera);
 
 
         // Call the initialization function
