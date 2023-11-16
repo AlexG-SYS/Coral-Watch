@@ -27,7 +27,7 @@
 
         #logoutButton {
             position: fixed;
-            font-size: 30px;
+            font-size: 20px;
             top: 10px;
             right: 10px;
             background: none;
@@ -60,9 +60,9 @@
         }
 
         .navbar-icon {
-            font-size: 24px;
+            font-size: 16px;
             /* Adjust the font size as needed */
-            padding: 8px;
+            padding: 4px;
             /* Adjust the padding as needed */
         }
 
@@ -96,7 +96,7 @@
             margin: 20px 0;
             /* Increase the margin for more separation */
             border-radius: 10px;
-            height: 74vh;
+            height: 72vh;
             background-color: white;
         }
 
@@ -106,7 +106,7 @@
         }
 
         #map {
-            height: 74vh;
+            height: 72vh;
             /* Set the height of the map */
             width: 100%;
             /* Make the map fill its container */
@@ -150,7 +150,6 @@
         .table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
 
         .table th,
@@ -212,12 +211,12 @@
         <!-- Coral List View -->
         <div id="coralListView" style="display: none;">
             <div id="container" class="scroll-container">
-                <h2 class="m-4 center">Coral History</h2>
-                <div class=" mx-4">
+                <h2 class="m-3 mt-4 center">Coral History</h2>
+                <div class=" mx-2">
                     <!-- Search bar -->
                     <input type="text" id="coralSearch" placeholder="Search...">
                 </div>
-                <div class=" mx-4">
+                <div class=" mx-2">
                     <!-- Filter dropdowns (example filters, customize as needed) -->
                     <label for="locationFilter">Location:</label>
                     <select id="locationFilter">
@@ -226,7 +225,8 @@
                         <option value="Location 2">Location 2</option>
                         <!-- Add more options as needed -->
                     </select>
-
+                </div>
+                <div class=" mx-2">
                     <label for="statusFilter" class="ml-2">Status:</label>
                     <select id="statusFilter">
                         <option value="">All</option>
@@ -238,7 +238,7 @@
                 </div>
 
                 <!-- Coral data table -->
-                <table class="table  mx-4">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -452,7 +452,7 @@
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: 17.1899, lng: -87.9606 }, // Belize Barrier Reef coordinates
-                zoom: 9.5
+                zoom: 9
             });
 
             // Add markers

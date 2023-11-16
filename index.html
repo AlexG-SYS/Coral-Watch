@@ -19,7 +19,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 94vh;
+            height: 92vh;
 
             padding-bottom: 56px;
             /* Adjusted for the fixed bottom navigation */
@@ -161,7 +161,7 @@
         }
 
         function login() {
-            const email = document.getElementById('loginEmail').value;
+            const email = document.getElementById('loginEmail').value.toLowerCase();;
             const password = document.getElementById('loginPassword').value;
 
             // Validation logic
