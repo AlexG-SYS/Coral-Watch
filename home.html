@@ -14,7 +14,7 @@
     <title>Coral Watch</title>
     <style>
         body {
-            height: 90vh;
+            height: 88vh;
             padding-bottom: 56px;
             /* Adjusted for the fixed bottom navigation */
             margin-bottom: 56px;
@@ -191,7 +191,7 @@
 
         <!-- Logout button -->
         <button id="logoutButton" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i>
+            <i class="fas fa-sign-out-alt">Logout</i>
         </button>
 
         <!-- Your main content goes here -->
@@ -263,7 +263,7 @@
                 <div id="cameraOutput" class="m-2">
                     <!-- Display camera output here -->
                 </div>
-                <div class="center">
+                <div class="center pb-4">
                     <button onclick="captureImage()" class="btn btn-primary mx-2">Capture Image</button>
                     <button onclick="captureVideo()" class="btn btn-success mx-2">Capture Video</button>
                 </div>
@@ -636,7 +636,7 @@
                 navigator.mediaDevices.getUserMedia({ video: true })
                     .then(stream => {
                         videoStream = stream;
-                        cameraOutput.innerHTML = '<video id="cameraFeed" width="100%" height="auto" autoplay></video>';
+                        cameraOutput.innerHTML = '<video id="cameraFeed" width="100%" height="90%" autoplay></video>';
                         const cameraFeed = document.getElementById('cameraFeed');
                         cameraFeed.srcObject = videoStream;
                     })
