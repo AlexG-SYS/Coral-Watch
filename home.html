@@ -245,6 +245,7 @@
                             <th>Name</th>
                             <th>Location</th>
                             <th>Status</th>
+                            <th hidden>Content</th>
                             <!-- Add more columns as needed -->
                         </tr>
                     </thead>
@@ -279,8 +280,12 @@
                     <!-- Latitude and Longitude in one line -->
                     <div class="form-group mx-4">
                         <label for="latitudeLongitude">Latitude & Longitude:</label>
-                        <input type="text" class="form-control" id="latitudeLongitude" name="latitudeLongitude"
-                            placeholder="e.g., 17.1899, -87.9606" required>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="latitudeLongitude" name="latitudeLongitude"
+                                placeholder="e.g., 17.1899, -87.9606" required>
+                            <!-- Button to automatically insert GPS coordinates -->
+                            <button type="button" class="btn btn-secondary" onclick="insertGPS()">Insert GPS</button>
+                        </div>
                     </div>
 
                     <!-- Coral Species with autocomplete -->
@@ -390,6 +395,7 @@
                     <p id="coralName"></p>
                     <p id="coralLocation"></p>
                     <p id="coralStatus"></p>
+                    <p id="coralContent"></p>
                     <!-- Add more fields as needed -->
                 </div>
             </div>
@@ -457,11 +463,11 @@
 
             // Add markers
             var markers = [
-                { lat: 17.2001, lng: -87.9609, title: 'Marker 1', content: 'Information for Coral One' },
-                { lat: 17.1501, lng: -87.9509, title: 'Marker 2', content: 'Information for Coral Two' },
-                { lat: 17.1001, lng: -87.9709, title: 'Marker 3', content: 'Information for Coral Three' },
-                { lat: 17.0501, lng: -87.9809, title: 'Marker 4', content: 'Information for Coral Four' },
-                { lat: 17.0001, lng: -87.9409, title: 'Marker 5', content: 'Information for Coral Five' }
+                { lat: 17.2001, lng: -87.9609, id: 1, title: 'Coral 1', status: 'Healthy', content: 'Information for Coral One' },
+                { lat: 17.1501, lng: -87.9509, id: 2, title: 'Coral 2', status: 'Bleached', content: 'Information for Coral Two' },
+                { lat: 17.1001, lng: -87.9709, id: 3, title: 'Coral 3', status: 'Healthy', content: 'Information for Coral Three' },
+                { lat: 17.0501, lng: -87.9809, id: 4, title: 'Coral 4', status: 'Stressed', content: 'Information for Coral Four' },
+                { lat: 17.0001, lng: -87.9409, id: 5, title: 'Coral 5', status: 'Healthy', content: 'Information for Coral Five' }
             ];
 
             markers.forEach(function (markerInfo) {
@@ -483,7 +489,8 @@
                         id: markerInfo.id,
                         name: markerInfo.title,
                         location: `(${markerInfo.lat}, ${markerInfo.lng})`,
-                        status: markerInfo.content
+                        status: markerInfo.status,
+                        content: markerInfo.content
                     });
                 });
             });
@@ -497,26 +504,26 @@
 
         // Sample coral data (replace with actual data)
         const coralData = [
-            { id: 1, name: 'Coral 1', location: 'Location 1', status: 'Healthy' },
-            { id: 2, name: 'Coral 2', location: 'Location 2', status: 'Bleached' },
-            { id: 3, name: 'Coral 3', location: 'Location 3', status: 'Healthy' },
-            { id: 4, name: 'Coral 4', location: 'Location 4', status: 'Stressed' },
-            { id: 5, name: 'Coral 5', location: 'Location 5', status: 'Healthy' },
-            { id: 6, name: 'Coral 6', location: 'Location 6', status: 'Bleached' },
-            { id: 7, name: 'Coral 7', location: 'Location 7', status: 'Healthy' },
-            { id: 8, name: 'Coral 8', location: 'Location 8', status: 'Bleached' },
-            { id: 9, name: 'Coral 9', location: 'Location 9', status: 'Healthy' },
-            { id: 10, name: 'Coral 10', location: 'Location 10', status: 'Stressed' },
-            { id: 11, name: 'Coral 11', location: 'Location 11', status: 'Healthy' },
-            { id: 12, name: 'Coral 12', location: 'Location 12', status: 'Bleached' },
-            { id: 13, name: 'Coral 13', location: 'Location 13', status: 'Healthy' },
-            { id: 14, name: 'Coral 14', location: 'Location 14', status: 'Bleached' },
-            { id: 15, name: 'Coral 15', location: 'Location 15', status: 'Healthy' },
-            { id: 16, name: 'Coral 16', location: 'Location 16', status: 'Stressed' },
-            { id: 17, name: 'Coral 17', location: 'Location 17', status: 'Healthy' },
-            { id: 18, name: 'Coral 18', location: 'Location 18', status: 'Bleached' },
-            { id: 19, name: 'Coral 19', location: 'Location 19', status: 'Healthy' },
-            { id: 20, name: 'Coral 20', location: 'Location 20', status: 'Stressed' }
+            { id: 1, name: 'Coral 1', location: 'Location 1', status: 'Healthy', content: 'Information for Coral One' },
+            { id: 2, name: 'Coral 2', location: 'Location 2', status: 'Bleached', content: 'Information for Coral Two' },
+            { id: 3, name: 'Coral 3', location: 'Location 1', status: 'Healthy', content: 'Information for Coral Three' },
+            { id: 4, name: 'Coral 4', location: 'Location 1', status: 'Stressed', content: 'Information for Coral Four' },
+            { id: 5, name: 'Coral 5', location: 'Location 2', status: 'Healthy', content: 'Information for Coral Five' },
+            { id: 6, name: 'Coral 6', location: 'Location 2', status: 'Bleached', content: 'Information for Coral Six' },
+            { id: 7, name: 'Coral 7', location: 'Location 2', status: 'Healthy', content: 'Information for Coral Seven' },
+            { id: 8, name: 'Coral 8', location: 'Location 2', status: 'Bleached', content: 'Information for Coral Eight' },
+            { id: 9, name: 'Coral 9', location: 'Location 2', status: 'Healthy', content: 'Information for Coral Nine' },
+            { id: 10, name: 'Coral 10', location: 'Location 2', status: 'Stressed', content: 'Information for Coral Ten' },
+            { id: 11, name: 'Coral 11', location: 'Location 1', status: 'Healthy', content: 'Information for Coral Eleven' },
+            { id: 12, name: 'Coral 12', location: 'Location 1', status: 'Bleached', content: 'Information for Coral Twelve' },
+            { id: 13, name: 'Coral 13', location: 'Location 1', status: 'Healthy', content: 'Information for Coral Therteen' },
+            { id: 14, name: 'Coral 14', location: 'Location 1', status: 'Bleached', content: 'Information for Coral Fourteen' },
+            { id: 15, name: 'Coral 15', location: 'Location 2', status: 'Healthy', content: 'Information for Coral Fifteen' },
+            { id: 16, name: 'Coral 16', location: 'Location 2', status: 'Stressed', content: 'Information for Coral Sixteen' },
+            { id: 17, name: 'Coral 17', location: 'Location 2', status: 'Healthy', content: 'Information for Coral Seventeen' },
+            { id: 18, name: 'Coral 18', location: 'Location 1', status: 'Bleached', content: 'Information for Coral Eighteen'},
+            { id: 19, name: 'Coral 19', location: 'Location 2', status: 'Healthy', content: 'Information for Coral Nineteen' },
+            { id: 20, name: 'Coral 20', location: 'Location 2', status: 'Stressed', content: 'Information for Coral Tewenty' }
             // Add more data as needed
         ];
 
@@ -562,7 +569,8 @@
                 row.innerHTML = `<td>${coral.id}</td>
                              <td>${coral.name}</td>
                              <td>${coral.location}</td>
-                             <td>${coral.status}</td>`;
+                             <td>${coral.status}</td>
+                             <td hidden>${coral.content}</td>`;
                 // Add more columns as needed
 
                 tableBody.appendChild(row);
@@ -584,6 +592,7 @@
                     const coralName = targetRow.querySelector('td:nth-child(2)').innerText;
                     const coralLocation = targetRow.querySelector('td:nth-child(3)').innerText;
                     const coralStatus = targetRow.querySelector('td:nth-child(4)').innerText;
+                    const coralContent = targetRow.querySelector('td:nth-child(5)').innerText;
                     // Add more fields as needed
 
                     // Set modal content
@@ -591,6 +600,7 @@
                     document.getElementById('coralName').innerText = `Name: ${coralName}`;
                     document.getElementById('coralLocation').innerText = `Location: ${coralLocation}`;
                     document.getElementById('coralStatus').innerText = `Status: ${coralStatus}`;
+                    document.getElementById('coralContent').innerText = `Content: ${coralContent}`;
                     // Update modal content for more fields
 
                     // Show the modal
@@ -606,6 +616,7 @@
             document.getElementById('coralName').innerText = `Name: ${coral.name}`;
             document.getElementById('coralLocation').innerText = `Location: ${coral.location}`;
             document.getElementById('coralStatus').innerText = `Status: ${coral.status}`;
+            document.getElementById('coralContent').innerText = `Content: ${coral.content}`;
             // Update modal content for more fields
 
             // Show the modal
@@ -688,6 +699,26 @@
 
                 // Reset the stream variable
                 videoStream = null;
+            }
+        }
+
+        function insertGPS() {
+            if (navigator.geolocation) {
+                // Requesting the user's current position
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        const coordinates = `${latitude}, ${longitude}`;
+                        document.getElementById("latitudeLongitude").value = coordinates;
+                    },
+                    function (error) {
+                        console.error("Error getting GPS coordinates:", error.message);
+                        alert("Unable to retrieve GPS coordinates. Please enter them manually.");
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser. Please enter GPS coordinates manually.");
             }
         }
 
